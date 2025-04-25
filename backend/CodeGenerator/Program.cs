@@ -5,7 +5,6 @@ namespace CodeGenerator;
 
 public class Program
 {
-    const string ServerUrl = "https://localhost:5000/feedback/";
 
     public static void Main(string[] args)
     {
@@ -16,10 +15,11 @@ public class Program
             var usedCourseCodes = context.Courses.Select(c => c.Code).ToList();
 
             var existingFeedbackCodes = context.Courses
+                .ToList()
                 .SelectMany(c => c.FeedbackCodes)
                 .ToList();
             
-            var (courseCode, courseName, deadline, participants) = CheckArguments(args);
+            var (courseCode, courseName, deadline, serverName, participants) = CheckArguments(args);
             
             if (usedCourseCodes.Contains(courseCode))
             {
@@ -43,7 +43,7 @@ public class Program
             var i = 1;
             foreach (var code in feedbackCodes)
             {
-                Console.WriteLine($"Participant {i++}: {ServerUrl}{code}");
+                Console.WriteLine($"Participant {i++}: https://{serverName}/feedback/{code}");
             }
             var course = new Course
             {
@@ -66,27 +66,26 @@ public class Program
             Console.WriteLine("Unexpected error: " + ex.Message);
         }
     }
-
-    // In Program.cs - Extracted methods for testability
-
-    public static (string courseCode, string courseName, DateTime deadline, int participants) CheckArguments(string[] args)
+    
+    public static (string courseCode, string courseName, DateTime deadline, string serverName, int participants) CheckArguments(string[] args)
     {
-        if (args.Length < 3)
+        if (args.Length < 4)
         {
-            throw new ArgumentException("Not enough arguments. Usage: <courseCode> <courseName> <deadline> [participants]");
+            throw new ArgumentException("Not enough arguments. Usage: <courseCode> <courseName> <deadline> <servername> [participants]");
         }
 
-        string courseCode = args[0];
-        string courseName = args[1];
-        string deadlineInput = args[2];
-        int participants = args.Length >= 4 ? int.Parse(args[3]) : 30;
+        var courseCode = args[0];
+        var courseName = args[1];
+        var deadlineInput = args[2];
+        var serverName = args[3];
+        var participants = args.Length >= 5 ? int.Parse(args[4]) : 30;
 
         if (courseCode.Length > 20 || courseName.Length > 200)
         {
             throw new ArgumentException("courseCode must be <= 20 characters and courseName <= 200 characters.");
         }
 
-        if (!DateTime.TryParseExact(deadlineInput, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime deadline))
+        if (!DateTime.TryParseExact(deadlineInput, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var deadline))
         {
             throw new ArgumentException("deadline must be in format yyyy-MM-dd.");
         }
@@ -96,7 +95,12 @@ public class Program
             throw new ArgumentException("participants must be between 1 and 99.");
         }
 
-        return (courseCode, courseName, deadline, participants);
+        if (serverName.Length > 40)
+        {
+            throw new ArgumentException("serverName must be <= 40 characters.");
+        }
+
+        return (courseCode, courseName, deadline, serverName, participants);
     }
 
     public static string GenerateUniqueCode()

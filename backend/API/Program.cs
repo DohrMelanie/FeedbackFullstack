@@ -1,3 +1,6 @@
+using API;
+using DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +18,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 var apiApp = app.MapGroup("/api");
-
+apiApp.MapGet("course/feebackcode/{feedbackCode}", FeedbackApi.GetCourseByFeedbackCode)
+    .Produces<FeedbackApi.Course>()
+    .Produces(StatusCodes.Status404NotFound);
 
 app.Run();

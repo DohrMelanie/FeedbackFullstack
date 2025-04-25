@@ -30,7 +30,7 @@ namespace UnitTests
         [Fact]
         public void CheckArguments_WithValidInput_ReturnsExpectedValues()
         {
-            string[] args = ["PROG123", "Programming Course", "2023-12-31", "25"];
+            string[] args = ["PROG123", "Programming Course", "2023-12-31", "server", "25"];
             var expectedDate = new DateTime(2023, 12, 31);
             var result = Program.CheckArguments(args);
             
@@ -43,7 +43,7 @@ namespace UnitTests
         [Fact]
         public void CheckArguments_WithDefaultParticipants_Returns30()
         {
-            string[] args = ["PROG123", "Programming Course", "2023-12-31"];
+            string[] args = ["PROG123", "Programming Course", "2023-12-31", "server"];
             var result = Program.CheckArguments(args);
             
             Assert.Equal(30, result.participants);
@@ -61,11 +61,11 @@ namespace UnitTests
             string[] args = testCase switch
             {
                 "NotEnoughArgs" => ["PROG123"],
-                "TooLongCourseCode" => [new string('A', 21), "Name", "2023-12-31"],
-                "TooLongCourseName" => ["PROG123", new string('A', 201), "2023-12-31"],
-                "InvalidDateFormat" => ["PROG123", "Name", "31.12.2023"],
-                "ZeroParticipants" => ["PROG123", "Name", "2023-12-31", "0"],
-                "TooManyParticipants" => ["PROG123", "Name", "2023-12-31", "100"],
+                "TooLongCourseCode" => [new string('A', 21), "Name", "2023-12-31", "server"],
+                "TooLongCourseName" => ["PROG123", new string('A', 201), "2023-12-31", "server"],
+                "InvalidDateFormat" => ["PROG123", "Name", "31.12.2023", "server"],
+                "ZeroParticipants" => ["PROG123", "Name", "2023-12-31", "server", "0"],
+                "TooManyParticipants" => ["PROG123", "Name", "2023-12-31", "server", "100"],
                 _ => []
             };
             var exception = Assert.Throws<ArgumentException>(() => Program.CheckArguments(args));
