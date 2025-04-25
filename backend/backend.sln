@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5F7A53B7-794E-4041-9F12-717CA67FB0C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "CodeGenerator\CodeGenerator.csproj", "{89BA77E5-C58D-4080-A25E-467D4F1C9712}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{5F7A53B7-794E-4041-9F12-717CA67FB0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F7A53B7-794E-4041-9F12-717CA67FB0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F7A53B7-794E-4041-9F12-717CA67FB0C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BA77E5-C58D-4080-A25E-467D4F1C9712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BA77E5-C58D-4080-A25E-467D4F1C9712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BA77E5-C58D-4080-A25E-467D4F1C9712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BA77E5-C58D-4080-A25E-467D4F1C9712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
