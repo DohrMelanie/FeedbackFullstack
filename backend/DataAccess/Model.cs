@@ -16,7 +16,11 @@ public class Course
 public class Feedback
 {
     public int Id { get; set; }
-    public int? CourseId { get; set; } = null;
+    public int? CourseId { get; set; }
     public Course Course { get; set; } = null!;
-    public string Text { get; set; } = string.Empty;
+    public int Helpful { get; set; }
+    public int Satisfied { get; set; }
+    public int Knowledgeable { get; set; }
+    public string? LikedMost { get; set; }
+    public string? LikedLeast { get; set; }
 }
