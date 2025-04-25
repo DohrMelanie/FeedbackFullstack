@@ -1,22 +1,23 @@
 <div class="feedback-container">
-  <div *ngIf="error" class="error-message">
-    {{ error }}
-  </div>
-
-  <div *ngIf="!error && !submitted">
+  @if(error) {
+    <div class="error-message">{{ error }}</div>
+  }
+  
+  @if(!error && !submitted) {
     <h1>Course Feedback</h1>
-    <div *ngIf="course" class="course-info">
-      <h2>{{ course.name }}</h2>
-      <p>Course Code: {{ course.code }}</p>
-    </div>
+    @if(course) {
+      <div class="course-info">
+        <h2>{{ course.name }}</h2>
+        <p>Course Code: {{ course.code }}</p>
+      </div>
+    }
 
     <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" class="feedback-form">
       <div class="form-group">
         <label for="helpful">Was the course helpful? *</label>
         <input type="number" id="helpful" formControlName="helpful" min="1" max="10" required>
         @if (feedbackForm.get('helpful')?.invalid && feedbackForm.get('helpful')?.touched) {
-        <div>Please provide a rating between 1 and 10</div>
-
+        <div class="error">Please provide a rating between 1 and 10</div>
         }
       </div>
 
@@ -52,7 +53,7 @@
 
       <button type="submit" [disabled]="!feedbackForm.valid">Submit Feedback</button>
     </form>
-  </div>
+  }
 
   @if(submitted) {
     <div class="thank-you">
@@ -60,4 +61,5 @@
       <p>Your feedback has been successfully submitted.</p>
     </div>
   }
+
 </div>

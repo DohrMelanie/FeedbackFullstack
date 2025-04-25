@@ -13,10 +13,10 @@ export class FeedbackService {
   async getCourseByFeedbackCode(feedbackCode: string): Promise<Course> {
     return await lastValueFrom(this.httpClient.get<Course>(this.apiUrl + "course/feedbackcode/" + feedbackCode));
   }
-  async postFeedback(feedback: { courseCode: string, helpful: number, satisfied: number, knowledgeable: number, likedMost: string, likedLeast: string }): Promise<void> {
+  async postFeedback(feedback: { feedbackCode: string, helpful: number, satisfied: number, knowledgeable: number, likedMost: string, likedLeast: string }): Promise<void> {
     await firstValueFrom(
       this.httpClient.post(this.apiUrl + 'feedback', {
-        courseCode: feedback.courseCode,
+        courseCode: feedback.feedbackCode,
         helpful: feedback.helpful,
         satisfied: feedback.satisfied,
         knowledgeable: feedback.knowledgeable,

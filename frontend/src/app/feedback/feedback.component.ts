@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class FeedbackComponent implements OnInit {
   feedbackForm: FormGroup;
+  feedbackCode: string | null = null;
   course: Course | null = null;
   error: string | null = null;
   submitted = false;
@@ -34,14 +35,14 @@ export class FeedbackComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const feedbackCode = this.route.snapshot.paramMap.get('code');
-    if (!feedbackCode) {
+    this.feedbackCode = this.route.snapshot.paramMap.get('code');
+    if (!this.feedbackCode) {
       this.error = 'Invalid feedback link';
       return;
     }
 
     try {
-      this.course = await this.feedbackService.getCourseByFeedbackCode(feedbackCode);
+      this.course = await this.feedbackService.getCourseByFeedbackCode(this.feedbackCode);
     } catch (error) {
       this.error = 'Invalid feedback link';
     }
@@ -51,7 +52,7 @@ export class FeedbackComponent implements OnInit {
     if (this.feedbackForm.valid && this.course) {
       try {
         await this.feedbackService.postFeedback({
-          courseCode: this.course.code,
+          feedbackCode: this.feedbackCode!,
           helpful: this.feedbackForm.value.helpful,
           satisfied: this.feedbackForm.value.satisfied,
           knowledgeable: this.feedbackForm.value.knowledgeable,
