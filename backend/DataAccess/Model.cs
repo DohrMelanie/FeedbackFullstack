@@ -23,4 +23,5 @@ public class Feedback
     public int Knowledgeable { get; set; }
     public string? LikedMost { get; set; }
     public string? LikedLeast { get; set; }
+    public string FeedbackCode { get; set; } = string.Empty;
 }

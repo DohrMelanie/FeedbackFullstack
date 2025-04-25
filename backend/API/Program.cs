@@ -40,9 +40,13 @@ apiApp.MapGet("/course/feedbackcode/{feedbackCode}", FeedbackApi.GetCourseByFeed
     .Produces(StatusCodes.Status404NotFound);
 
 apiApp.MapPost("/feedback", FeedbackApi.PostFeedback)
-    .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<FeedbackApi.PostFeedbackDto>(ValidationHelpers.ValidateAddSoftwareDto))
+    .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<FeedbackApi.PostFeedbackDto>(ValidationHelpers.ValidateAddFeedbackDto))
     .Accepts<FeedbackApi.PostFeedbackDto>("application/json")
     .Produces(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status404NotFound);
+
+apiApp.MapGet("/feedback/{courseCode}/{secretCourseCode}", FeedbackApi.GetFeedbackFromCourse)
+    .Produces<FeedbackApi.FeedbackOverviewDto[]>()
     .Produces(StatusCodes.Status404NotFound);
 
 app.Run();
