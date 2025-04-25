@@ -27,12 +27,12 @@ public class ValidationHelpers
             errors[nameof(feedback.Knowledgeable)] = ["Knowledgeable must be between 1 and 10"];
         }
 
-        if (feedback.LikedMost.Length > 500)
+        if (feedback.LikedMost != null && feedback.LikedMost.Length > 500)
         {
             errors[nameof(feedback.LikedMost)] = ["Liked Most must be less than 500 characters"];
         }
 
-        if (feedback.LikedLeast.Length > 500)
+        if (feedback.LikedLeast != null && feedback.LikedLeast.Length > 500)
         {
             errors[nameof(feedback.LikedLeast)] = ["Liked Least must be less than 500 characters"];
         }

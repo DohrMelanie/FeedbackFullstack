@@ -65,6 +65,18 @@ public static class FeedbackApi
         return Results.Ok(result);
     }
 
+    public static async Task<IResult> StopCourse(string courseCode, string secretCourseCode,
+        ApplicationDataContext context)
+    {
+        var courseEntity = await context.Courses
+            .FirstOrDefaultAsync(c => c.Code == courseCode && c.SecretCode == secretCourseCode);
+        if (courseEntity == null)
+            return Results.NotFound();
+        courseEntity.IsOpen = false;
+        await context.SaveChangesAsync();
+        return Results.Ok();
+    }
+    
     public static async Task<IResult> PostFeedback(PostFeedbackDto req, ApplicationDataContext context)
     {
         try
@@ -73,7 +85,7 @@ public static class FeedbackApi
                 .Include(c => c.Feedbacks)
                 .FirstOrDefaultAsync(c => c.FeedbackCodes.Contains(req.FeedbackCode));
 
-            if (courseEntity == null)
+            if (courseEntity == null || !courseEntity.IsOpen)
                 return Results.BadRequest(new { error = "Invalid feedback request" });
 
             var alreadyUsed = courseEntity.Feedbacks.Any(f => f.FeedbackCode == req.FeedbackCode);
@@ -87,8 +99,8 @@ public static class FeedbackApi
                 Helpful = req.Helpful,
                 Satisfied = req.Satisfied,
                 Knowledgeable = req.Knowledgeable,
-                LikedMost = req.LikedMost.Length == 0 ? null : req.LikedMost,
-                LikedLeast = req.LikedLeast.Length == 0 ? null : req.LikedLeast,
+                LikedMost = req.LikedMost,
+                LikedLeast = req.LikedLeast,
                 FeedbackCode = req.FeedbackCode 
             });
 
@@ -101,6 +113,18 @@ public static class FeedbackApi
         }
     }
 
+    public static async Task<IResult> DeleteCourse(string courseCode, string secretCourseCode,
+        ApplicationDataContext context)
+    {
+        var courseEntity = await context.Courses
+            .FirstOrDefaultAsync(c => c.Code == courseCode && c.SecretCode == secretCourseCode);
+        if (courseEntity == null)
+            return Results.NotFound();
+        context.Courses.Remove(courseEntity);
+        await context.SaveChangesAsync();
+        return Results.Ok();
+    }
+
     public record CourseByFeedback(
         string Name,
         string Code
@@ -111,8 +135,8 @@ public static class FeedbackApi
         int Helpful,
         int Satisfied,
         int Knowledgeable,
-        string LikedMost,
-        string LikedLeast
+        string? LikedMost,
+        string? LikedLeast
     );
 
     public record FeedbackOverviewDto(
