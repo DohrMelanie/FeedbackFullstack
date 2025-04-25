@@ -1,0 +1,21 @@
+## Ignore Visual Studio temporary files, build results, and
+## user-specific files
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+Generated\ Files/
+
+# Uncomment if you have tasks in your project
+# .vs/tasks.json
+
+# Visual Studio Code settings
+.vscode/
