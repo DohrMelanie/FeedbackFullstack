@@ -1,24 +1,28 @@
 using API;
 using DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddDbContext<ApplicationDataContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
 
 var apiApp = app.MapGroup("/api");
-apiApp.MapGet("course/feebackcode/{feedbackCode}", FeedbackApi.GetCourseByFeedbackCode)
+apiApp.MapGet("/course/feebackcode/{feedbackCode}", FeedbackApi.GetCourseByFeedbackCode)
     .Produces<FeedbackApi.Course>()
     .Produces(StatusCodes.Status404NotFound);
 
