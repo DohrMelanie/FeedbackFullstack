@@ -46,10 +46,10 @@ apiApp.MapPost("/feedback", FeedbackApi.PostFeedback)
     .Produces(StatusCodes.Status404NotFound);
 
 apiApp.MapGet("/feedback/{courseCode}/{secretCourseCode}", FeedbackApi.GetFeedbackFromCourse)
-    .Produces<FeedbackApi.FeedbackOverviewDto[]>()
+    .Produces<FeedbackApi.FeedbackOverviewDto>()
     .Produces(StatusCodes.Status404NotFound);
 
-apiApp.MapPut("/course/stop/{courseCode}/{secretCourseCode}", FeedbackApi.StopCourse)
+apiApp.MapPatch("/course/stop/{courseCode}/{secretCourseCode}", FeedbackApi.StopCourse)
     .Produces(StatusCodes.Status204NoContent)
     .Produces(StatusCodes.Status404NotFound);
 

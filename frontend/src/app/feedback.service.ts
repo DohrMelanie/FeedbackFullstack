@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Course } from './types';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { Course, CourseFeedback } from './types';
+import { first, firstValueFrom, lastValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,57 @@ export class FeedbackService {
   private readonly httpClient = inject(HttpClient);
 
   async getCourseByFeedbackCode(feedbackCode: string): Promise<Course> {
-    return await lastValueFrom(this.httpClient.get<Course>(this.apiUrl + "course/feedbackcode/" + feedbackCode));
+    return await firstValueFrom(this.httpClient.get<Course>(this.apiUrl + "course/feedbackcode/" + feedbackCode));
   }
+
   async postFeedback(feedback: { feedbackCode: string, helpful: number, satisfied: number, knowledgeable: number, likedMost: string, likedLeast: string }): Promise<void> {
+    // Create payload with required fields
+    const payload: any = {
+      feedbackCode: feedback.feedbackCode,
+      helpful: feedback.helpful,
+      satisfied: feedback.satisfied,
+      knowledgeable: feedback.knowledgeable
+    };
+    
+    if (feedback.likedMost && feedback.likedMost.trim().length > 0) {
+      payload.likedMost = feedback.likedMost;
+    }
+    
+    if (feedback.likedLeast && feedback.likedLeast.trim().length > 0) {
+      payload.likedLeast = feedback.likedLeast;
+    }
+    
     await firstValueFrom(
-      this.httpClient.post(this.apiUrl + 'feedback', {
-        courseCode: feedback.feedbackCode,
-        helpful: feedback.helpful,
-        satisfied: feedback.satisfied,
-        knowledgeable: feedback.knowledgeable,
-        likedMost: feedback.likedMost,
-        likedLeast: feedback.likedLeast
-      })
+      this.httpClient.post(this.apiUrl + 'feedback', payload)
+    );
+  }
+
+  async getFeedbackOverview(courseCode: string, secretCourseCode: string): Promise<CourseFeedback> {
+    const response = await firstValueFrom(
+      this.httpClient.get<CourseFeedback | CourseFeedback[]>(`${this.apiUrl}feedback/${courseCode}/${secretCourseCode}`)
+    );
+    
+    // If the response is an array, return the first item
+    if (Array.isArray(response)) {
+      if (response.length > 0) {
+        return response[0];
+      }
+      throw new Error('No feedback data found');
+    }
+    
+    // Otherwise return the response directly
+    return response;
+  }
+
+  async stopCourse(courseCode: string, secretCourseCode: string): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.patch(`${this.apiUrl}course/stop/${courseCode}/${secretCourseCode}`, null)
+    );
+  }
+
+  async deleteCourse(courseCode: string, secretCourseCode: string): Promise<void> {
+    await firstValueFrom(
+      this.httpClient.delete(`${this.apiUrl}course/${courseCode}/${secretCourseCode}`)
     );
   }
 }

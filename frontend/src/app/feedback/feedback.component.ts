@@ -21,7 +21,6 @@ export class FeedbackComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private feedbackService: FeedbackService,
     private fb: FormBuilder
   ) {

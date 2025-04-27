@@ -60,7 +60,7 @@ public static class FeedbackApi
                         .ToList()
                 ) : null
             );
-        }).ToList();
+        }).First();
 
         return Results.Ok(result);
     }
