@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="overview-panel">
+    @if (isLoading) {
+      <div class="loading">
+        <h2>Loading feedback data...</h2>
+      </div>
+    } @else if (error) {
+      <div class="error">
+        <h2>Error</h2>
+        <p>{{ error }}</p>
+        <button (click)="loadFeedbackData()">Try Again</button>
+      </div>
+    } @else if (feedbackData) {
+      <div class="header">
+        <h1>Course Feedback Overview</h1>
+        <div class="course-info">
+          <div class="info-item">
+            <span class="label">Course Code:</span>
+            <span class="value">{{ feedbackData.courseCode }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Course Name:</span>
+            <span class="value">{{ feedbackData.courseName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Status:</span>
+            <span class="value status" [class.stopped]="isFeedbackStopped()">
+              {{ feedbackData.feedbackStatus }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-value">{{ feedbackData.numberOfParticipants }}</span>
+          <span class="stat-label">Participants</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">{{ feedbackData.numberOfFeedbacksSubmitted }}</span>
+          <span class="stat-label">Feedbacks Submitted</span>
+        </div>
+      </div>
+
+      @if (hasFeedback()) {
+        <div class="feedback-section">
+          <div class="ratings">
+            <h2>Average Ratings</h2>
+            <div class="rating-grid">
+              <div class="rating-item">
+                <div class="rating-label">Helpful</div>
+                <div class="rating-bar">
+                  <div class="rating-fill" [style.width.%]="feedbackData.averageRatings.helpful * 20"></div>
+                </div>
+                <div class="rating-value">{{ feedbackData.averageRatings.helpful.toFixed(1) }} / 5</div>
+              </div>
+              <div class="rating-item">
+                <div class="rating-label">Satisfied</div>
+                <div class="rating-bar">
+                  <div class="rating-fill" [style.width.%]="feedbackData.averageRatings.satisfied * 20"></div>
+                </div>
+                <div class="rating-value">{{ feedbackData.averageRatings.satisfied.toFixed(1) }} / 5</div>
+              </div>
+              <div class="rating-item">
+                <div class="rating-label">Knowledgeable</div>
+                <div class="rating-bar">
+                  <div class="rating-fill" [style.width.%]="feedbackData.averageRatings.knowledgeable * 20"></div>
+                </div>
+                <div class="rating-value">{{ feedbackData.averageRatings.knowledgeable.toFixed(1) }} / 5</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comments">
+            <div class="comment-section">
+              <h3>What Participants Liked Most</h3>
+              <ul class="comment-list">
+                @for (comment of feedbackData.feedbackComments.likedMostComments; track $index) {
+                  <li class="comment-item">{{ comment }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="comment-section">
+              <h3>What Participants Liked Least</h3>
+              <ul class="comment-list">
+                @for (comment of feedbackData.feedbackComments.likedLeastComments; track $index) {
+                  <li class="comment-item">{{ comment }}</li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="no-feedback">
+          <p>No feedback has been submitted yet.</p>
+        </div>
+      }
+
+      <div class="actions">
+        @if (!isFeedbackStopped()) {
+          <button class="stop-button" (click)="stopFeedback()">Stop Feedback Process</button>
+        }
+        @if (isFeedbackStopped()) {
+          <button class="delete-button" (click)="openDeleteConfirmation()">Delete Course</button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (showDeleteConfirmation) {
+    <div class="delete-modal">
+      <div class="delete-dialog">
+        <h2>Confirm Course Deletion</h2>
+        <p>This will permanently delete all course and feedback data. This action cannot be undone.</p>
+        
+        <div class="form-group">
+          <label for="confirmCode">Enter course code to confirm deletion:</label>
+          <input 
+            type="text" 
+            id="confirmCode" 
+            [(ngModel)]="confirmCourseCode" 
+            placeholder="Course code"
+            required>
+        </div>
+
+        <div class="modal-actions">
+          <button class="cancel-button" (click)="cancelDelete()">Cancel</button>
+          <button class="confirm-button" (click)="deleteCourse()">Confirm Deletion</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
