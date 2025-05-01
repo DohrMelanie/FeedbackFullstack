@@ -5,8 +5,8 @@
 }
 
 .error-message {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: white;
+  color: red;
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -15,7 +15,7 @@
 .course-info {
   margin-bottom: 2rem;
   padding: 1rem;
-  background-color: #f5f5f5;
+  background-color: white;
   border-radius: 4px;
 }
 
@@ -38,15 +38,15 @@ label {
 input[type="number"] {
   width: 100px;
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid white;
+  border-radius: 8px;
 }
 
 textarea {
   width: 100%;
   min-height: 100px;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid white;
   border-radius: 4px;
   resize: vertical;
 }
@@ -58,13 +58,13 @@ textarea {
 }
 
 .error {
-  color: #c62828;
+  color: red;
   font-size: 0.875rem;
 }
 
 button {
   padding: 0.75rem 1.5rem;
-  background-color: #1976d2;
+  background-color: green;
   color: white;
   border: none;
   border-radius: 4px;
@@ -74,23 +74,23 @@ button {
 }
 
 button:disabled {
-  background-color: #bdbdbd;
+  background-color: greys;
   cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
-  background-color: #1565c0;
+  background-color: darkgreen;
 }
 
 .thank-you {
   text-align: center;
   padding: 2rem;
-  background-color: #e8f5e9;
+  background-color: white;
   border-radius: 4px;
 }
 
 .thank-you h2 {
-  color: #2e7d32;
+  color: green;
   margin-bottom: 1rem;
 }
 

@@ -16,7 +16,6 @@ export class FeedbackService {
   }
 
   async postFeedback(feedback: { feedbackCode: string, helpful: number, satisfied: number, knowledgeable: number, likedMost: string, likedLeast: string }): Promise<void> {
-    // Create payload with required fields
     const payload: any = {
       feedbackCode: feedback.feedbackCode,
       helpful: feedback.helpful,
@@ -42,16 +41,13 @@ export class FeedbackService {
       this.httpClient.get<CourseFeedback | CourseFeedback[]>(`${this.apiUrl}feedback/${courseCode}/${secretCourseCode}`)
     );
     
-    // If the response is an array, return the first item
     if (Array.isArray(response)) {
       if (response.length > 0) {
         return response[0];
       }
       throw new Error('No feedback data found');
     }
-    
-    // Otherwise return the response directly
-    return response;
+        return response;
   }
 
   async stopCourse(courseCode: string, secretCourseCode: string): Promise<void> {

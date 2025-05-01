@@ -39,7 +39,7 @@ public static class FeedbackApi
             return new FeedbackOverviewDto(
                 CourseCode: course.Code,
                 CourseName: course.Name,
-                FeedbackStatus: DateTime.UtcNow <= course.Deadline ? "Open" : "Stopped",
+                FeedbackStatus: course.IsOpen ? DateTime.UtcNow <= course.Deadline ? "Open" : "Closed" : "Closed",
                 NumberOfParticipants: course.Participants,
                 NumberOfFeedbacksSubmitted: course.Feedbacks.Count,
                 AverageRatings: hasFeedback ? new AverageRatingDto(

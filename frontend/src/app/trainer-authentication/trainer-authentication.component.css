@@ -18,7 +18,6 @@
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
 }
 
 .form-group {
@@ -39,14 +38,8 @@ input {
   font-size: 16px;
 }
 
-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
 .error-message {
-  color: #dc3545;
+  color: red;
   margin-bottom: 1rem;
   padding: 0.5rem;
   background-color: rgba(220, 53, 69, 0.1);
@@ -57,22 +50,12 @@ input:focus {
 button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-button:hover {
-  background-color: #0069d9;
-}
-
-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
 }
 
 /* Responsive styles */

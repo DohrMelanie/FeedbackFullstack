@@ -103,6 +103,6 @@ export class TrainerOverviewComponent implements OnInit {
   }
   
   isFeedbackStopped(): boolean {
-    return this.feedbackData?.feedbackStatus === 'Stopped';
+    return this.feedbackData?.feedbackStatus === 'Closed';
   }
 }

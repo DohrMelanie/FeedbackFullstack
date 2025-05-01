@@ -28,9 +28,6 @@ export class TrainerAuthenticationComponent {
       return;
     }
 
-    this.isLoading = true;
-    this.errorMessage = '';
-
     try {
       await this.feedbackService.getFeedbackOverview(this.courseCode, this.secretCourseCode);
       // If no error is thrown, authentication is successful
@@ -42,8 +39,6 @@ export class TrainerAuthenticationComponent {
       });
     } catch (error) {
       this.errorMessage = 'Invalid course code or secret course code';
-    } finally {
-      this.isLoading = false;
-    }
+    } 
   }
 }
